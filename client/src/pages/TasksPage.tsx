@@ -8,23 +8,28 @@ import { useTasks } from "../hooks/useTasks";
 import type { TaskFilter } from "../types/task.types";
 
 function TasksPage() {
-  const { tasks, loading, error, addTask, completeTask, removeTask } = useTasks();
+  const { tasks, loading, error, addTask, completeTask, removeTask } =
+    useTasks();
 
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("medium");
   const [currentFilter, setCurrentFilter] = useState<TaskFilter>("all");
+  const [searchText, setSearchText] = useState("");
 
   const filteredTasks = useMemo(() => {
-    if (currentFilter === "pending") {
-      return tasks.filter((task) => !task.completed);
-    }
+    return tasks.filter((task) => {
+      const matchesFilter =
+        currentFilter === "all" ||
+        (currentFilter === "pending" && !task.completed) ||
+        (currentFilter === "completed" && task.completed);
 
-    if (currentFilter === "completed") {
-      return tasks.filter((task) => task.completed);
-    }
+      const matchesSearch = task.title
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
 
-    return tasks;
-  }, [tasks, currentFilter]);
+      return matchesFilter && matchesSearch;
+    });
+  }, [tasks, currentFilter, searchText]);
 
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
@@ -76,6 +81,20 @@ function TasksPage() {
         onSubmit={handleSubmit}
       />
 
+      <div className="mb-6">
+        <label className="mb-2 block text-sm text-slate-300">
+          Buscar tarea
+        </label>
+
+        <input
+          type="text"
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
+          placeholder="Buscar por título..."
+          className="w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-blue-500"
+        />
+      </div>
+
       <TaskFilters
         currentFilter={currentFilter}
         onFilterChange={setCurrentFilter}
@@ -84,14 +103,20 @@ function TasksPage() {
       {error && <p className="mb-4 text-red-400">{error}</p>}
 
       <div className="space-y-4">
-        {filteredTasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            onToggle={completeTask}
-            onDelete={removeTask}
-          />
-        ))}
+        {filteredTasks.length > 0 ? (
+          filteredTasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              onToggle={completeTask}
+              onDelete={removeTask}
+            />
+          ))
+        ) : (
+          <p className="rounded-xl border border-slate-800 bg-slate-900 p-5 text-center text-slate-400">
+            No hay tareas que coincidan con la búsqueda.
+          </p>
+        )}
       </div>
     </div>
   );
