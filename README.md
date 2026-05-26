@@ -1,20 +1,22 @@
-# TaskFlow Fullstack
-
-Aplicación fullstack de gestión de tareas desarrollada con React, TypeScript, Express y SQLite.
-
-Permite crear, editar, completar, eliminar, filtrar y buscar tareas mediante una API REST documentada con Swagger.
+# TaskFlow - Fullstack Task Manager
 
 ---
 
-# Deploy
+# Descripción
 
-## Frontend
-https://taskflow-fullstack-eta.vercel.app/tasks
+TaskFlow es una aplicación fullstack de gestión de tareas donde los usuarios pueden crear, organizar y gestionar tareas con diferentes estados y prioridades.
 
-## Backend API
+---
+
+# Demo
+
+Frontend:
+https://taskflow-fullstack-eta.vercel.app/
+
+Backend API:
 https://taskflow-fullstack-6enn.onrender.com/api/v1/tasks
 
-## Swagger UI
+Swagger:
 https://taskflow-fullstack-6enn.onrender.com/api-docs
 
 ---
@@ -23,205 +25,94 @@ https://taskflow-fullstack-6enn.onrender.com/api-docs
 
 - Crear tareas
 - Eliminar tareas
-- Marcar como completadas
-- Listado dinámico
-- Filtros (Todas / Pendientes / Completadas)
-- Buscador de tareas
-- Estadísticas en tiempo real
-- API REST completa
-- Persistencia con SQLite
-- Documentación Swagger
+- Marcar tareas como completadas
+- Filtrar por estado (todas, pendientes, completadas)
+- Buscar tareas por título
+- Asignar prioridad (Alta / Media / Baja)
+- Persistencia en base de datos SQLite
+
+---
+
+# Estructura del proyecto
+
+La aplicación está separada en frontend y backend.  
+El frontend gestiona la interfaz y el backend la lógica y la base de datos.
+
+```
+taskflow-fullstack/
+│
+├── client/                  # Frontend (React + TypeScript)
+│   ├── src/
+│   │   ├── api/             # Peticiones HTTP al backend
+│   │   ├── components/      # Componentes reutilizables de UI
+│   │   ├── context/         # Estado global (Context API)
+│   │   ├── hooks/           # Hooks personalizados
+│   │   ├── pages/           # Vistas principales de la app
+│   │   ├── types/           # Tipos TypeScript
+│   │   └── main.tsx         # Entrada del frontend
+│
+├── server/                  # Backend (Node.js + Express)
+│   ├── src/
+│   │   ├── config/          # Configuración del servidor
+│   │   ├── controllers/     # Controladores (manejan requests)
+│   │   ├── services/        # Lógica de negocio
+│   │   ├── routes/          # Endpoints de la API REST
+│   │   ├── database/        # Configuración SQLite
+│   │   └── index.js         # Entrada del servidor
+│
+├── docs/                    # Documentación del proyecto
+│   └── images/              # Capturas del README
+│
+└── README.md
+```
 
 ---
 
 # Tecnologías
 
-## Frontend
+Frontend:
 - React
 - TypeScript
 - Vite
 - Context API
-- CSS moderno
 
-## Backend
+Backend:
 - Node.js
-- Express.js
-- SQLite (better-sqlite3)
-- Swagger (swagger-ui-express + swagger-jsdoc)
-- CORS
+- Express
+- API REST
 
----
-
-# Arquitectura del proyecto
-
-El proyecto está organizado como una aplicación fullstack separada en dos capas:
-
-- Frontend (cliente)
-- Backend (API REST)
-
----
-
-## Estructura general
-
-```
-taskflow-fullstack/
-│
-├── client/                          # Frontend React + TypeScript
-│   ├── src/
-│   │   ├── api/                    # Llamadas a la API (fetch/axios)
-│   │   ├── assets/                 # Recursos estáticos
-│   │   ├── components/             # Componentes reutilizables
-│   │   ├── context/                # Context API (estado global)
-│   │   ├── hooks/                 # Custom hooks
-│   │   ├── pages/                 # Vistas principales
-│   │   ├── types/                 # Tipos TypeScript
-│   │   └── App.tsx                # Router principal
-│
-├── server/                          # Backend Node.js + Express
-│   ├── src/
-│   │   ├── config/                # Configuración (DB, env)
-│   │   ├── controllers/           # Controladores HTTP
-│   │   ├── database/              # Conexión SQLite
-│   │   ├── middlewares/          # Middlewares personalizados
-│   │   ├── routes/               # Endpoints API REST
-│   │   ├── services/             # Lógica de negocio
-│   │   ├── swagger/              # Documentación Swagger
-│   │   └── index.js              # Entrada del servidor
-│
-├── docs/                           # Documentación del proyecto
-│   ├── images/                    # Capturas del README
-│   ├── agile.md                  # Metodología
-│   ├── idea.md                   # Idea del proyecto
-│   ├── api.md                    # Documentación API
-│   ├── architecture.md          # Arquitectura
-│   └── deployment.md            # Deploy y configuración
-│
-├── README.md                      # Documentación principal
-└── .gitignore
-```
----
----
-
-# Instalación local
-
-## Clonar repositorio
-```bash
-git clone https://github.com/ismaelcontelles40-debug/taskflow-fullstack.git
-```
-
----
-
-## Backend
-```bash
-cd server
-npm install
-npm run dev
-```
-
-Servidor:
-```
-http://localhost:3000
-```
-
----
-
-## Frontend
-```bash
-cd client
-npm install
-npm run dev
-```
-
-Frontend:
-```
-http://localhost:5173
-```
-
----
-
-# API Endpoints
-
-## Obtener tareas
-```
-GET /api/v1/tasks
-```
-
-## Crear tarea
-```
-POST /api/v1/tasks
-```
-
-## Actualizar tarea
-```
-PATCH /api/v1/tasks/:id
-```
-
-## Eliminar tarea
-```
-DELETE /api/v1/tasks/:id
-```
-
----
-
-# Context API
-
-Se utiliza Context API para la gestión global del estado:
-
-- Estado centralizado de tareas
-- Evita prop drilling
-- Sincronización con backend
-- Lógica CRUD centralizada
-
----
-
-# Base de datos
-
-SQLite con better-sqlite3.
-
-Archivo:
-```
-server/taskflow.db
-```
+Base de datos:
+- SQLite
 
 ---
 
 # Capturas
 
-## Presentación
-![UI](docs/images/modo-presentacion.png)
+Escritorio:
+Vista principal con tareas, filtros y buscador.
 
----
----
+Móvil:
+Diseño responsive adaptado a dispositivos móviles.
 
-## Vista móvil
-![Mobile](docs/images/modo-movil.png)
-
----
----
-
-## Swagger
-![Swagger](docs/images/servidor.png)
+API:
+Documentación completa en Swagger.
 
 ---
 
-# Scripts
+# Instalación
 
-## Backend
-```
+Backend:
+cd server
+npm install
 npm run dev
-```
 
-## Frontend
-```
+Frontend:
+cd client
+npm install
 npm run dev
-```
 
 ---
 
 # Autor
 
-Proyecto desarrollado por Ismael Contelles
-
-Bootcamp / ASIR - Proyecto Fullstack de práctica profesional
-
----
+Ismael Contelles
