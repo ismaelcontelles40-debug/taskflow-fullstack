@@ -22,7 +22,7 @@ Permite crear, editar, completar, eliminar, filtrar y buscar tareas mediante una
 # Deploy
 
 ## Frontend
-https://taskflow-fullstack-6enn.onrender.com/api/v1
+https://taskflow-fullstack-eta.vercel.app/tasks
 
 ## Backend API
 https://taskflow-fullstack-6enn.onrender.com/api/v1/tasks
