@@ -1,48 +1,60 @@
-<# TaskFlow Fullstack
+# TaskFlow Fullstack
 
-Aplicación fullstack desarrollada con React, TypeScript, Tailwind CSS y Node.js + Express.
+Aplicación fullstack de gestión de tareas desarrollada con React, TypeScript, Express y SQLite.
 
-El proyecto permite gestionar tareas mediante una interfaz moderna y una API REST organizada mediante arquitectura por capas.
+Permite crear, editar, completar, eliminar, filtrar y buscar tareas mediante una API REST documentada con Swagger.
 
 ---
 
-# Tecnologías utilizadas
+# Deploy
 
 ## Frontend
+https://taskflow-fullstack-eta.vercel.app/tasks
 
-- React
-- TypeScript
-- Tailwind CSS
-- React Router
+## Backend API
+https://taskflow-fullstack-6enn.onrender.com/api/v1/tasks
 
----
-
-## Backend
-
-- Node.js
-- Express
+## Swagger UI
+https://taskflow-fullstack-6enn.onrender.com/api-docs
 
 ---
 
-# Características principales
+# Funcionalidades
 
 - Crear tareas
-- Editar tareas
 - Eliminar tareas
-- Marcar tareas como completadas
-- Filtrar tareas
-- Buscar tareas
-- Arquitectura fullstack
-- API REST
-- Componentes reutilizables
-- Estado global con Context API
-- Diseño responsive
+- Marcar como completadas
+- Listado dinámico
+- Filtros (Todas / Pendientes / Completadas)
+- Buscador de tareas
+- Estadísticas en tiempo real
+- API REST completa
+- Persistencia con SQLite
+- Documentación Swagger
 
 ---
 
-# Estructura del proyecto
+# Tecnologías
 
-```txt
+## Frontend
+- React
+- TypeScript
+- Vite
+- Context API
+- CSS moderno
+
+## Backend
+- Node.js
+- Express.js
+- SQLite (better-sqlite3)
+- Swagger (swagger-ui-express + swagger-jsdoc)
+- CORS
+
+---
+
+# Arquitectura
+
+```
 taskflow-fullstack/
 │
 ├── client/
@@ -52,42 +64,146 @@ taskflow-fullstack/
 │   │   ├── context/
 │   │   ├── hooks/
 │   │   ├── pages/
-│   │   ├── types/
-│   │   └── utils/
+│   │   └── types/
 │
 ├── server/
 │   ├── src/
 │   │   ├── config/
 │   │   ├── controllers/
+│   │   ├── database/
 │   │   ├── routes/
 │   │   ├── services/
-│   │   └── middlewares/
+│   │   └── index.js
 │
 ├── docs/
-│
-└── README.md
+│   └── images/
 ```
 
 ---
 
-# Documentación
+# Instalación local
 
-## Metodologías Agile
-
-- [Agile](docs/agile.md)
-
-## Idea del proyecto
-
-- [Idea del proyecto](docs/idea.md)
+## Clonar repositorio
+```bash
+git clone https://github.com/ismaelcontelles40-debug/taskflow-fullstack.git
+```
 
 ---
 
-# Objetivo
+## Backend
+```bash
+cd server
+npm install
+npm run dev
+```
 
-El objetivo del proyecto es aplicar conceptos de desarrollo fullstack utilizando tecnologías modernas y buenas prácticas de arquitectura frontend y backend.
+Servidor:
+```
+http://localhost:3000
+```
 
 ---
 
-# Estado del proyecto
+## Frontend
+```bash
+cd client
+npm install
+npm run dev
+```
 
-Proyecto en desarrollo.>
+Frontend:
+```
+http://localhost:5173
+```
+
+---
+
+# API Endpoints
+
+## Obtener tareas
+```
+GET /api/v1/tasks
+```
+
+## Crear tarea
+```
+POST /api/v1/tasks
+```
+
+## Actualizar tarea
+```
+PATCH /api/v1/tasks/:id
+```
+
+## Eliminar tarea
+```
+DELETE /api/v1/tasks/:id
+```
+
+---
+
+# Context API
+
+Se utiliza Context API para la gestión global del estado:
+
+- Estado centralizado de tareas
+- Evita prop drilling
+- Sincronización con backend
+- Lógica CRUD centralizada
+
+---
+
+# Base de datos
+
+SQLite con better-sqlite3.
+
+Archivo:
+```
+server/taskflow.db
+```
+
+---
+
+# Capturas
+
+## Vista escritorio
+![Desktop](docs/images/servidor.png)
+
+---
+
+## Vista móvil
+![Mobile](docs/images/modo-movil.png)
+
+---
+
+## Presentación
+![UI](docs/images/modo-presentacion.png)
+
+---
+
+## Swagger
+![Swagger](docs/images/servidor.png)
+
+---
+
+# Scripts
+
+## Backend
+```
+npm run dev
+```
+
+## Frontend
+```
+npm run dev
+```
+
+---
+
+# Autor
+
+Proyecto desarrollado por Ismael Contelles
+
+Bootcamp / ASIR - Proyecto Fullstack de práctica profesional
+
+---
