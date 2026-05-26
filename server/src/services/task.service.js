@@ -1,53 +1,58 @@
-let tasks = [
-  {
-    id: 1,
-    title: "Crear estructura inicial del proyecto",
-    completed: true,
-    priority: "high",
-  },
-  {
-    id: 2,
-    title: "Conectar frontend con backend",
-    completed: false,
-    priority: "medium",
-  },
-];
+const db = require("../database/db");
 
 const getAllTasks = () => {
-  return tasks;
+  const tasks = db
+    .prepare("SELECT * FROM tasks ORDER BY id DESC")
+    .all();
+
+  return tasks.map((task) => ({
+    ...task,
+    completed: Boolean(task.completed),
+  }));
 };
 
 const createTask = ({ title, priority }) => {
-  const newTask = {
-    id: Date.now(),
+  const result = db
+    .prepare(
+      "INSERT INTO tasks (title, priority) VALUES (?, ?)"
+    )
+    .run(title, priority);
+
+  return {
+    id: result.lastInsertRowid,
     title,
     completed: false,
     priority,
   };
-
-  tasks.push(newTask);
-
-  return newTask;
 };
 
 const toggleTask = (id) => {
-  const task = tasks.find((taskItem) => taskItem.id === id);
+  const task = db
+    .prepare("SELECT * FROM tasks WHERE id = ?")
+    .get(id);
 
   if (!task) {
     return null;
   }
 
-  task.completed = !task.completed;
+  const newCompletedValue = task.completed ? 0 : 1;
 
-  return task;
+  db.prepare(
+    "UPDATE tasks SET completed = ? WHERE id = ?"
+  ).run(newCompletedValue, id);
+
+  return {
+    ...task,
+    completed: Boolean(newCompletedValue),
+  };
 };
 
 const deleteTask = (id) => {
-  const initialLength = tasks.length;
+  const result = db
+    .prepare("DELETE FROM tasks WHERE id = ?")
+    .run(id);
 
-  tasks = tasks.filter((task) => task.id !== id);
-
-  return tasks.length !== initialLength;
+  return result.changes > 0;
 };
 
 module.exports = {
