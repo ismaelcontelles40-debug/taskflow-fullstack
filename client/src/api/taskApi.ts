@@ -1,6 +1,6 @@
 import type { Task } from "../types/task.types";
 
-const API_URL = "https://taskflow-fullstack-6enn.onrender.com/api/v1/tasks";
+const API_URL = "https://taskflow-fullstack-6enn.onrender.com/api/v1";
 
 export async function getTasks(): Promise<Task[]> {
   const response = await fetch(API_URL);

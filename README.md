@@ -52,33 +52,54 @@ https://taskflow-fullstack-6enn.onrender.com/api-docs
 
 ---
 
-# Arquitectura
+# Arquitectura del proyecto
+
+El proyecto está organizado como una aplicación fullstack separada en dos capas:
+
+- Frontend (cliente)
+- Backend (API REST)
+
+---
+
+## Estructura general
 
 ```
 taskflow-fullstack/
 │
-├── client/
+├── client/                          # Frontend React + TypeScript
 │   ├── src/
-│   │   ├── api/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── hooks/
-│   │   ├── pages/
-│   │   └── types/
+│   │   ├── api/                    # Llamadas a la API (fetch/axios)
+│   │   ├── assets/                 # Recursos estáticos
+│   │   ├── components/             # Componentes reutilizables
+│   │   ├── context/                # Context API (estado global)
+│   │   ├── hooks/                 # Custom hooks
+│   │   ├── pages/                 # Vistas principales
+│   │   ├── types/                 # Tipos TypeScript
+│   │   └── App.tsx                # Router principal
 │
-├── server/
+├── server/                          # Backend Node.js + Express
 │   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── database/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   └── index.js
+│   │   ├── config/                # Configuración (DB, env)
+│   │   ├── controllers/           # Controladores HTTP
+│   │   ├── database/              # Conexión SQLite
+│   │   ├── middlewares/          # Middlewares personalizados
+│   │   ├── routes/               # Endpoints API REST
+│   │   ├── services/             # Lógica de negocio
+│   │   ├── swagger/              # Documentación Swagger
+│   │   └── index.js              # Entrada del servidor
 │
-├── docs/
-│   └── images/
+├── docs/                           # Documentación del proyecto
+│   ├── images/                    # Capturas del README
+│   ├── agile.md                  # Metodología
+│   ├── idea.md                   # Idea del proyecto
+│   ├── api.md                    # Documentación API
+│   ├── architecture.md          # Arquitectura
+│   └── deployment.md            # Deploy y configuración
+│
+├── README.md                      # Documentación principal
+└── .gitignore
 ```
-
+---
 ---
 
 # Instalación local
@@ -166,19 +187,16 @@ server/taskflow.db
 
 # Capturas
 
-## Vista escritorio
-![Desktop](docs/images/servidor.png)
+## Presentación
+![UI](docs/images/modo-presentacion.png)
 
+---
 ---
 
 ## Vista móvil
 ![Mobile](docs/images/modo-movil.png)
 
 ---
-
-## Presentación
-![UI](docs/images/modo-presentacion.png)
-
 ---
 
 ## Swagger
