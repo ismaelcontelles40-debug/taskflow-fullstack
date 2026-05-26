@@ -4,3 +4,5 @@ export interface Task {
   completed: boolean;
   priority: string;
 }
+
+export type TaskFilter = "all" | "pending" | "completed";

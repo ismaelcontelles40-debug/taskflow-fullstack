@@ -1,71 +1,46 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
 
 import TaskCard from "../components/TaskCard";
+import TaskFilters from "../components/TaskFilters";
 import TaskForm from "../components/TaskForm";
-import { createTask, deleteTask, getTasks, toggleTask } from "../api/taskApi";
-import type { Task } from "../types/task.types";
+import { useTasks } from "../hooks/useTasks";
+import type { TaskFilter } from "../types/task.types";
 
 function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const { tasks, loading, error, addTask, completeTask, removeTask } = useTasks();
+
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("medium");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [currentFilter, setCurrentFilter] = useState<TaskFilter>("all");
 
-  useEffect(() => {
-    getTasks()
-      .then((data) => setTasks(data))
-      .catch(() => setError("No se pudieron cargar las tareas"))
-      .finally(() => setLoading(false));
-  }, []);
+  const filteredTasks = useMemo(() => {
+    if (currentFilter === "pending") {
+      return tasks.filter((task) => !task.completed);
+    }
+
+    if (currentFilter === "completed") {
+      return tasks.filter((task) => task.completed);
+    }
+
+    return tasks;
+  }, [tasks, currentFilter]);
+
+  const totalTasks = tasks.length;
+  const completedTasks = tasks.filter((task) => task.completed).length;
+  const pendingTasks = tasks.filter((task) => !task.completed).length;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!title.trim()) {
-      setError("El título de la tarea es obligatorio");
       return;
     }
 
-    try {
-      const newTask = await createTask(title, priority);
+    await addTask(title, priority);
 
-      setTasks((currentTasks) => [...currentTasks, newTask]);
-      setTitle("");
-      setPriority("medium");
-      setError("");
-    } catch {
-      setError("No se pudo crear la tarea");
-    }
-  };
-
-  const handleToggleTask = async (id: number) => {
-    try {
-      const updatedTask = await toggleTask(id);
-
-      setTasks((currentTasks) =>
-        currentTasks.map((task) => (task.id === id ? updatedTask : task))
-      );
-
-      setError("");
-    } catch {
-      setError("No se pudo actualizar la tarea");
-    }
-  };
-
-  const handleDeleteTask = async (id: number) => {
-    try {
-      await deleteTask(id);
-
-      setTasks((currentTasks) =>
-        currentTasks.filter((task) => task.id !== id)
-      );
-
-      setError("");
-    } catch {
-      setError("No se pudo eliminar la tarea");
-    }
+    setTitle("");
+    setPriority("medium");
   };
 
   if (loading) {
@@ -76,6 +51,23 @@ function TasksPage() {
     <div className="w-full max-w-3xl">
       <h1 className="mb-6 text-center text-4xl font-bold">Tareas</h1>
 
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-center">
+          <p className="text-sm text-slate-400">Total</p>
+          <p className="text-3xl font-bold">{totalTasks}</p>
+        </div>
+
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-center">
+          <p className="text-sm text-slate-400">Pendientes</p>
+          <p className="text-3xl font-bold">{pendingTasks}</p>
+        </div>
+
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-center">
+          <p className="text-sm text-slate-400">Completadas</p>
+          <p className="text-3xl font-bold">{completedTasks}</p>
+        </div>
+      </div>
+
       <TaskForm
         title={title}
         priority={priority}
@@ -84,15 +76,20 @@ function TasksPage() {
         onSubmit={handleSubmit}
       />
 
+      <TaskFilters
+        currentFilter={currentFilter}
+        onFilterChange={setCurrentFilter}
+      />
+
       {error && <p className="mb-4 text-red-400">{error}</p>}
 
       <div className="space-y-4">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <TaskCard
             key={task.id}
             task={task}
-            onToggle={handleToggleTask}
-            onDelete={handleDeleteTask}
+            onToggle={completeTask}
+            onDelete={removeTask}
           />
         ))}
       </div>
