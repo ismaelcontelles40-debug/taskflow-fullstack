@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const taskRoutes = require("./routes/task.routes");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -14,6 +16,8 @@ app.get("/", (req, res) => {
     message: "API de TaskFlow Fullstack funcionando correctamente",
   });
 });
+
+app.use("/api/v1/tasks", taskRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en http://localhost:${PORT}`);
